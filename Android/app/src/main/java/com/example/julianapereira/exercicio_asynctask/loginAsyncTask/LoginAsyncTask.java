@@ -21,42 +21,37 @@ import java.net.URL;
 /**
  * Created by Juliana Pereira on 22/12/2015.
  */
-public class LoginAsyncTask extends AsyncTask<String, Void, HttpURLConnection>{
+public class LoginAsyncTask extends AsyncTask<String, Void, Response>{
 
     Context context;
+    private User user;
 
-    public LoginAsyncTask(Context activity) {
+    public LoginAsyncTask(Context context, User user) {
 
-        this.context = activity;
+        this.context = context;
+        this.user = user;
     }
 
     @Override
     protected void onPreExecute() {
 
-        Log.i("NotificationWearApp", "OnPreExecute");
+        Log.i("OnPreExecute");
     }
 
     @Override
-    protected HttpURLConnection doInBackground(String... valores) {
-
-        Log.i("NotificationWearApp", "doInBackground: " + valores[0]);
-
-        HttpURLConnection connection = null;
+    protected Response doInBackground(String... valores) {
 
         try {
+            JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("nome", User.getUsername());
+                    jsonObject.put("senha", User.getPassword());
 
-            connection = HttpService.sendGetRequest("servicoservlet");
+            response = HttpUtil.sendJSONPostResquest(jsonObject, SERVICE_URL);
+                } catch (IOException ioex) {
+                     Log.e("IOException", ioex.getMessage());
+                 }
 
-        } catch (MalformedURLException ex) {
-
-            Log.e("NotificationWearApp","MalformedURLException");
-
-        } catch (IOException ex) {
-
-            Log.e("NotificationWearApp","MalformedURLException");
-        }
-
-        return connection;
+        return response;
     }
 
     @Override
