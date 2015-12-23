@@ -17,7 +17,7 @@ import java.net.URL;
 public class HttpService {
 
 
-    private static final String URL_CONTEXT = "http://192.168.25.75:8080/rest-servlet-service/";
+    private static final String URL_CONTEXT = "http://192.168.25.75:8080/WebService/";
 
     public static HttpURLConnection sendGetRequest(String service)
             throws MalformedURLException, IOException{
@@ -66,7 +66,7 @@ public class HttpService {
 
         } catch (IOException e) {
 
-            Log.e("NotificationWearApp", "IOException: " + e);
+            Log.e("IOException: " + e);
         }
 
         return builder.toString();

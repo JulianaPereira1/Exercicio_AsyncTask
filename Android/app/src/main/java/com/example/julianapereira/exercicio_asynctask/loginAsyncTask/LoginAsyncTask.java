@@ -34,8 +34,7 @@ public class LoginAsyncTask extends AsyncTask<String, Void, Response>{
 
     @Override
     protected void onPreExecute() {
-
-        Log.i("OnPreExecute");
+        super.onPreExecute();
     }
 
     @Override
@@ -43,8 +42,8 @@ public class LoginAsyncTask extends AsyncTask<String, Void, Response>{
 
         try {
             JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("nome", User.getUsername());
-                    jsonObject.put("senha", User.getPassword());
+                    jsonObject.put("nome", User.getNome());
+                    jsonObject.put("senha", User.getSenha());
 
             response = HttpUtil.sendJSONPostResquest(jsonObject, SERVICE_URL);
                 } catch (IOException ioex) {
@@ -55,27 +54,11 @@ public class LoginAsyncTask extends AsyncTask<String, Void, Response>{
     }
 
     @Override
-    protected void onPostExecute(HttpURLConnection connection) {
+    protected void onPostExecute(Response response) {
+        super.onPostExecute(response);
 
-        try {
-
-            int status = connection.getResponseCode();
-
-            Log.i("NotificationWearApp", "Status HTTP-Response: " + status);
-
-            String contentValue = HttpService.getHttpContent(connection);
-            JSONObject json = new JSONObject(contentValue);
-
-            String nome = json.getString("nome");
-            Toast.makeText(context, nome, Toast.LENGTH_LONG).show();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-
-        } catch (JSONException e) {
-
-            Log.e("NotificationWearApp", "JSONException");
-        }
+            if(response.getStatus() == 200){
+                Toast.makeText("Sucesso!", Toast.LENGTH_LONG).show();
+            }
     }
 }
